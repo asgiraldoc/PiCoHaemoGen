@@ -2,8 +2,9 @@ import sys
 import os
 import argparse
 
-## import functions
 sys.path.append('scripts/')
+
+## import functions
 from readsRedirection import primerDetection
 from mafft import mafftRaw, mafftFinal
 from fasta2binary import fasta2bin
@@ -35,7 +36,7 @@ def main():
     primerDetection(rawReads, primerF, primerR)
 
     rmFiles = args.RemoveFiles
-
+    print(rawReads, "##########")
     ## run raw aligment
     mafftRawOut= str(rawReads).split(".")[0] + "_nolong.fasta"
     mafftRaw(mafftRawOut)

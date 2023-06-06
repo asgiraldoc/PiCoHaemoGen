@@ -7,8 +7,7 @@ How to run it?
 python PiCoHaemoGen.py -rR folder/data
 
 Requirements: 
-mafft (MAFFT - a multiple sequence alignment program)
-Some python module (Biopython, tensorflow, numpy, etc)
+mafft (MAFFT - a multiple sequence alignment program) and some python modules (Biopython, tensorflow, numpy, etc).
 
 
                         +----------------------+

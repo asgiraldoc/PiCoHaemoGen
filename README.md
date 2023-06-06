@@ -1,5 +1,4 @@
-# PacBioPipeLine
-PiCoHaemoGen: PacBio-integrated Computational Pipeline for Haemosporida Mitochondrial Genome Analysis
+# PiCoHaemoGen: PacBio-integrated Computational Pipeline for Haemosporida Mitochondrial Genome Analysis
 
 
 PiCoHaemoGen is a computational pipeline designed to analyze PacBio sequenced Haemosporida mitochondrial genomes. It executes a sequence of operations that involves correcting sequence direction, generating a consensus sequence for each genetic cluster discovered by a Variational Autoencoder (VAE), a machine learning model for sequence clustering.

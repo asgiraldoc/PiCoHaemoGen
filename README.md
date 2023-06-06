@@ -3,6 +3,8 @@
 
 PiCoHaemoGen is a computational pipeline designed to analyze PacBio sequenced Haemosporida mitochondrial genomes. It executes a sequence of operations that involves correcting sequence direction, generating a consensus sequence for each genetic cluster discovered by a Variational Autoencoder (VAE), a machine learning model for DNA sequence clustering.
 
+python PiCoHaemoGen.py -rR folder/data
+
                         +----------------------+
                         | Primer Detection and |
                         |   Read Redirection   |

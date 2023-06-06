@@ -30,20 +30,21 @@ def main():
     ## files
     rawReads = args.rawReads
     nameSample = str(rawReads).split(".")[0]
+    dirSample = str(rawReads).split("/")[0]
+    dirc = os.getcwd()+"/"+dirSample
     ## run readsRedirection
     primerF = args.primerF
     primerR = args.primerR
     primerDetection(rawReads, primerF, primerR)
 
     rmFiles = args.RemoveFiles
-    print(rawReads, "##########")
     ## run raw aligment
-    mafftRawOut= str(rawReads).split(".")[0] + "_nolong.fasta"
-    mafftRaw(mafftRawOut)
+    mafftRawOut = str(rawReads).split(".")[0] + "_nolong.fasta"
+    mafftRaw(mafftRawOut, dirc)
 
     ## run convert DNA seq to Binary format
     fasta2binOut= str(rawReads).split(".")[0] + "_mafftRaw.fasta"
-    fasta2bin(fasta2binOut)
+    fasta2bin(fasta2binOut, dirc)
 
     ## run VAE program and clustering
     VAErunOut = str(rawReads).split(".")[0] + "_bin.txt"
@@ -51,18 +52,18 @@ def main():
     nameCluster = str(rawReads).split(".")[0]
     extract_cluster_labels_dbscan (mu, VAErunData, nameCluster)
 
-    txtCluster = [f for f in os.listdir() if f.endswith('-.txt') and f.startswith(nameCluster)]
+    txtCluster = [f for f in os.listdir(dirc) if f.endswith('-.txt') and f.startswith(nameCluster)]
     for headers_file in txtCluster:
         mapped_output_file = headers_file.split(".")[0] + ".fa"
         txt2fasta(mafftRawOut, headers_file, mapped_output_file)
 
     ## run final aligment
-    filesM = [f for f in os.listdir() if f.endswith('.fa') and f.startswith(nameSample)]
+    filesM = [f for f in os.listdir(dirc) if f.endswith('.fa') and f.startswith(nameSample)]
 
     mafftFinal(filesM)
 
     ## polishing output
-    filesFinal = [f for f in os.listdir() if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample)]
+    filesFinal = [f for f in os.listdir(dirc) if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample)]
     polishing(filesFinal)
 
     # removing temporal files

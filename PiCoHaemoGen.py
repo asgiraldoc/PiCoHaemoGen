@@ -1,3 +1,9 @@
+import sys
+import os
+import argparse
+
+## import functions
+sys.path.append('scripts/')
 from readsRedirection import primerDetection
 from mafft import mafftRaw, mafftFinal
 from fasta2binary import fasta2bin
@@ -7,8 +13,6 @@ from cluster2fasta import txt2fasta
 from consensus import polishing
 from rmTmp import remove_temp_files
 
-import os
-import argparse
 
 def main():
     ## Arguments 

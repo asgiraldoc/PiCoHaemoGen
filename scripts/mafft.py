@@ -19,3 +19,4 @@ def mafftFinal(list_files):
         # Use subprocess to run the command and redirect the output to a file
         with open(outf, 'w') as outfile:
             subprocess.run(mafft_command, stdout=outfile)
+

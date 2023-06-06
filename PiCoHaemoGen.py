@@ -23,7 +23,7 @@ def main():
     ### readsRedirection arguments
     parser.add_argument('-pF', '--primerF', type=str, help="primerF 5'-3', default=GATTCTCTCCACACTTCAATTCGTACTTC", default='GATTCTCTCCACACTTCAATTCGTACTTC')
     parser.add_argument('-pR', '--primerR', type=str, help="primerR 5'-3, default=GAAGTACGAATTGAAGTGTGGAGAGAATC", default='GAAGTACGAATTGAAGTGTGGAGAGAATC')
-    parser.add_argument('-rF', '--RemoveFiles', type=str, help="Removing temporal files, default= yes", default='yes')
+    parser.add_argument('-rF', '--RemoveFiles', type=str, help="Removing temporal files, default=no", default='no')
 
     args = parser.parse_args()
 
@@ -40,30 +40,33 @@ def main():
     rmFiles = args.RemoveFiles
     ## run raw aligment
     mafftRawOut = str(rawReads).split(".")[0] + "_nolong.fasta"
-    mafftRaw(mafftRawOut, dirc)
+    # mafftRaw(mafftRawOut, dirc)
 
     ## run convert DNA seq to Binary format
     fasta2binOut= str(rawReads).split(".")[0] + "_mafftRaw.fasta"
     fasta2bin(fasta2binOut, dirc)
 
     ## run VAE program and clustering
-    VAErunOut = str(rawReads).split(".")[0] + "_bin.txt"
-    mu, VAErunData = VAE_model(VAErunOut)
-    nameCluster = str(rawReads).split(".")[0]
-    extract_cluster_labels_dbscan (mu, VAErunData, nameCluster)
+    # VAErunOut = str(rawReads).split(".")[0] + "_bin.txt"
+    # mu, VAErunData = VAE_model(VAErunOut)
+    # nameCluster = str(rawReads).split(".")[0]
+    # extract_cluster_labels_dbscan(mu, VAErunData, nameCluster)
 
-    txtCluster = [f for f in os.listdir(dirc) if f.endswith('-.txt') and f.startswith(nameCluster)]
+    ## run cluster2fasta
+    os.chdir(dirc)
+    txtCluster = [f for f in os.listdir() if f.endswith('-.txt') and f.startswith(nameSample)]
+    print(nameSample, nameSample, nameSample, "DDDDDDDDD")
     for headers_file in txtCluster:
         mapped_output_file = headers_file.split(".")[0] + ".fa"
-        txt2fasta(mafftRawOut, headers_file, mapped_output_file)
+        txt2fasta(mafftRawOut.split("/")[1], headers_file, mapped_output_file)
 
     ## run final aligment
-    filesM = [f for f in os.listdir(dirc) if f.endswith('.fa') and f.startswith(nameSample)]
+    filesM = [f for f in os.listdir() if f.endswith('.fa') and f.startswith(nameSample.split("/")[0])]
 
     mafftFinal(filesM)
 
     ## polishing output
-    filesFinal = [f for f in os.listdir(dirc) if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample)]
+    filesFinal = [f for f in os.listdir(dirc) if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample.split("/")[0])]
     polishing(filesFinal)
 
     # removing temporal files

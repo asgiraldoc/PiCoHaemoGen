@@ -8,7 +8,7 @@ How to run it?
 `python PiCoHaemoGen.py -rR folder/data`
 
 More options:
-`
+<pre>
 optional arguments:
   -h, --help            show this help message and exit
   -rR RAWREADS, --rawReads RAWREADS
@@ -19,7 +19,8 @@ optional arguments:
                         primerR 5'-3, default=GAAGTACGAATTGAAGTGTGGAGAGAATC
   -rF REMOVEFILES, --RemoveFiles REMOVEFILES
                         Removing temporal files, default=no
-`
+                  
+</pre>
 Requirements: 
 mafft (MAFFT - a multiple sequence alignment program) and some python modules (Biopython, tensorflow, numpy, etc).
 

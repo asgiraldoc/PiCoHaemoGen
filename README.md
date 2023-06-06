@@ -7,6 +7,19 @@ How to run it?
 
 `python PiCoHaemoGen.py -rR folder/data`
 
+More options:
+`
+optional arguments:
+  -h, --help            show this help message and exit
+  -rR RAWREADS, --rawReads RAWREADS
+                        folder with rawReads from PacBio sequencing
+  -pF PRIMERF, --primerF PRIMERF
+                        primerF 5'-3', default=GATTCTCTCCACACTTCAATTCGTACTTC
+  -pR PRIMERR, --primerR PRIMERR
+                        primerR 5'-3, default=GAAGTACGAATTGAAGTGTGGAGAGAATC
+  -rF REMOVEFILES, --RemoveFiles REMOVEFILES
+                        Removing temporal files, default=no
+`
 Requirements: 
 mafft (MAFFT - a multiple sequence alignment program) and some python modules (Biopython, tensorflow, numpy, etc).
 

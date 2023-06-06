@@ -40,22 +40,21 @@ def main():
     rmFiles = args.RemoveFiles
     ## run raw aligment
     mafftRawOut = str(rawReads).split(".")[0] + "_nolong.fasta"
-    # mafftRaw(mafftRawOut, dirc)
+    mafftRaw(mafftRawOut, dirc)
 
     ## run convert DNA seq to Binary format
     fasta2binOut= str(rawReads).split(".")[0] + "_mafftRaw.fasta"
     fasta2bin(fasta2binOut, dirc)
 
     ## run VAE program and clustering
-    # VAErunOut = str(rawReads).split(".")[0] + "_bin.txt"
-    # mu, VAErunData = VAE_model(VAErunOut)
-    # nameCluster = str(rawReads).split(".")[0]
-    # extract_cluster_labels_dbscan(mu, VAErunData, nameCluster)
+    VAErunOut = str(rawReads).split(".")[0] + "_bin.txt"
+    mu, VAErunData = VAE_model(VAErunOut)
+    nameCluster = str(rawReads).split(".")[0]
+    extract_cluster_labels_dbscan(mu, VAErunData, nameCluster)
 
     ## run cluster2fasta
     os.chdir(dirc)
     txtCluster = [f for f in os.listdir() if f.endswith('-.txt') and f.startswith(nameSample)]
-    print(nameSample, nameSample, nameSample, "DDDDDDDDD")
     for headers_file in txtCluster:
         mapped_output_file = headers_file.split(".")[0] + ".fa"
         txt2fasta(mafftRawOut.split("/")[1], headers_file, mapped_output_file)

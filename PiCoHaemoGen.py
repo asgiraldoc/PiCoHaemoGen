@@ -54,14 +54,16 @@ def main():
 
     ## run cluster2fasta
     os.chdir(dirc)
-    txtCluster = [f for f in os.listdir() if f.endswith('-.txt') and f.startswith(nameSample)]
+    print(os.getcwd())
+    txtCluster = [f for f in os.listdir() if f.endswith('-.txt') and f.startswith(nameSample.split("/")[0])]
+    print(txtCluster)
     for headers_file in txtCluster:
         mapped_output_file = headers_file.split(".")[0] + ".fa"
         txt2fasta(mafftRawOut.split("/")[1], headers_file, mapped_output_file)
 
     ## run final aligment
     filesM = [f for f in os.listdir() if f.endswith('.fa') and f.startswith(nameSample.split("/")[0])]
-
+    print(filesM)
     mafftFinal(filesM)
 
     ## polishing output

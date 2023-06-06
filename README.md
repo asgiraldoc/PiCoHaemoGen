@@ -7,9 +7,9 @@ How to run it?
 
 `python PiCoHaemoGen.py -rR folder/data`
 
-More options:
+Optional arguments:
+
 <pre>
-optional arguments:
   -h, --help            show this help message and exit
   -rR RAWREADS, --rawReads RAWREADS
                         folder with rawReads from PacBio sequencing

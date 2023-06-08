@@ -5,10 +5,10 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 import os
 
-def polishing(list_files):
+def cons(list_files):
     for input_file in list_files:
         nameOut= str(input_file).split("_mafft")[0]
-        outf= str(input_file).split("_mafft")[0] + "_final.fasta"
+        outf= str(input_file).split("_mafft")[0] + "_consensus.fasta"
         alignment = AlignIO.read(input_file, "fasta")  # Read the alignment file
         consensus_seq = ''  # Initialize consensus sequence
 
@@ -35,7 +35,7 @@ def polishing(list_files):
             if sorted_nucleotides[0][1] / len(alignment) > 0.85:
                 consensus_seq += sorted_nucleotides[0][0]  # Add the most common nucleotide to the consensus sequence
             else:
-                consensus_seq += 'x'  # Add 'X' if there is no consensus
+                consensus_seq += 'N'  # Add 'X' if there is no consensus
 
         # Write the consensus sequence to a new fasta file
         consensus_seq = Seq(consensus_seq)

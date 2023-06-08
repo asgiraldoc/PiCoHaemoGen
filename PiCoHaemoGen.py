@@ -1,6 +1,7 @@
 import sys
 import os
 import argparse
+import subprocess
 
 sys.path.append('scripts/')
 
@@ -11,9 +12,9 @@ from fasta2binary import fasta2bin
 from VAEmethod import VAE_model
 from DBScan import extract_cluster_labels_dbscan
 from cluster2fasta import txt2fasta
-from consensus import polishing
+from consensus import cons
 from rmTmp import remove_temp_files
-
+from concatenate import concat
 
 def main():
     ## Arguments 
@@ -66,9 +67,18 @@ def main():
     print(filesM)
     mafftFinal(filesM)
 
-    ## polishing output
-    filesFinal = [f for f in os.listdir(dirc) if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample.split("/")[0])]
-    polishing(filesFinal)
+    ## consensus output
+    filesC = [f for f in os.listdir(dirc) if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample.split("/")[0])]
+    cons(filesC)
+
+    ## concatenate output
+    filesC0  = [f for f in os.listdir() if f.endswith('_mafftFinal.fasta')]
+    filesC1  = [f for f in os.listdir() if f.endswith('_consensus.fasta') ]
+    concat(filesC0, filesC1)
+
+    ## gapfree output
+    filesG0  = [f for f in os.listdir() if f.endswith('-_RawHap.fasta')]
+    
 
     # removing temporal files
     remove_temp_files(rmFiles)

@@ -78,7 +78,7 @@ def main():
     ## concatenate output
     filesC0  = [f for f in os.listdir() if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample.split("/")[0])]
     filesC1  = [f for f in os.listdir() if f.endswith('_consensus.fasta')  and f.startswith(nameSample.split("/")[0])]
-    concat(filesC0, filesC1)
+    concat(filesC1, filesC0)
 
     ## gapfree output
     filesG0  = [f for f in os.listdir() if f.endswith('-_RawHap.fasta')]
@@ -99,11 +99,11 @@ def main():
     ## Haplotypes gapfree output
     filesG1  = [f for f in os.listdir() if f.endswith('-_corrHap.fasta')]
     for file in filesG1:
-        outf = str(file).split("-")[0] + "-_corrHap-ng.fasta"
-        remove_gap_columns(file, outf)
+        outf = str(file).split("-")[0] + "-_corrHapng.fasta"
+        remove_gap_columns(file, outf, "no")
 
     ## counting Haplotypes
-    filesH = [f for f in os.listdir() if f.endswith('-_corrHap-ng.fasta')]
+    filesH = [f for f in os.listdir() if f.endswith('-_corrHapng.fasta')]
     for file in filesH:
         outf = str(file).split("-")[0] + "-_HaplotypesFinal.fasta"
         countHaps(file, outf)

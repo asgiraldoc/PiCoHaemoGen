@@ -16,7 +16,7 @@ def correct_sequences(input_msa_file, output_msa_file):
         corrected_seq_str = ''
 
         for cons, seq in zip(str(consensus_seq.seq).upper(), str(record.seq).upper()):
-            if cons != 'X':
+            if cons != 'N':
                 corrected_seq_str += cons
             else:
                 corrected_seq_str += seq

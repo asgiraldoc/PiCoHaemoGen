@@ -28,5 +28,3 @@ def correct_sequences(input_msa_file, output_msa_file):
     AlignIO.write(corrected_alignment, output_msa_file, "fasta")
 
 
-# Use the function
-correct_sequences("test.fasta", "corrected_alignment.fasta")

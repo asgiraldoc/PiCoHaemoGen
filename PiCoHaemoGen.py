@@ -100,7 +100,7 @@ def main():
     filesG1  = [f for f in os.listdir() if f.endswith('-_corrHap.fasta')]
     for file in filesG1:
         outf = str(file).split("-")[0] + "-_corrHap-ng.fasta"
-        remove_gaps_from_multifasta(file, outf)
+        remove_gap_columns(file, outf)
 
     ## counting Haplotypes
     filesH = [f for f in os.listdir() if f.endswith('-_corrHap-ng.fasta')]

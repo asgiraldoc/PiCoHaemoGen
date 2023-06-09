@@ -15,6 +15,10 @@ from cluster2fasta import txt2fasta
 from consensus import cons
 from rmTmp import remove_temp_files
 from concatenate import concat
+from corrHap import correct_sequences
+from removeGap import remove_gaps_from_multifasta
+from gapFree import remove_gap_columns
+from countHap import countHaps
 
 def main():
     ## Arguments 
@@ -39,6 +43,7 @@ def main():
     primerDetection(rawReads, primerF, primerR)
 
     rmFiles = args.RemoveFiles
+
     ## run raw aligment
     mafftRawOut = str(rawReads).split(".")[0] + "_nolong.fasta"
     mafftRaw(mafftRawOut, dirc)
@@ -64,7 +69,6 @@ def main():
 
     ## run final aligment
     filesM = [f for f in os.listdir() if f.endswith('.fa') and f.startswith(nameSample.split("/")[0])]
-    print(filesM)
     mafftFinal(filesM)
 
     ## consensus output
@@ -72,13 +76,38 @@ def main():
     cons(filesC)
 
     ## concatenate output
-    filesC0  = [f for f in os.listdir() if f.endswith('_mafftFinal.fasta')]
-    filesC1  = [f for f in os.listdir() if f.endswith('_consensus.fasta') ]
+    filesC0  = [f for f in os.listdir() if f.endswith('_mafftFinal.fasta') and f.startswith(nameSample.split("/")[0])]
+    filesC1  = [f for f in os.listdir() if f.endswith('_consensus.fasta')  and f.startswith(nameSample.split("/")[0])]
     concat(filesC0, filesC1)
 
     ## gapfree output
     filesG0  = [f for f in os.listdir() if f.endswith('-_RawHap.fasta')]
-    
+    for file in filesG0:
+        outf = str(file).split("-")[0] + "-_RawHap-ng.fasta"
+        remove_gaps_from_multifasta(file, outf)
+
+    ### mafft gapfree
+    filesM1 = [f for f in os.listdir() if f.endswith('-_RawHap-ng.fasta')]
+    mafftHap(filesM1)
+
+    ## correcting Haplotype alignment
+    filesHc = [f for f in os.listdir() if f.endswith('-_aliHap.fasta')]
+    for file in filesHc:
+        outf = str(file).split("-")[0] + "-_corrHap.fasta"
+        correct_sequences(file, outf)
+
+    ## Haplotypes gapfree output
+    filesG1  = [f for f in os.listdir() if f.endswith('-_corrHap.fasta')]
+    for file in filesG1:
+        outf = str(file).split("-")[0] + "-_corrHap-ng.fasta"
+        remove_gaps_from_multifasta(file, outf)
+
+    ## counting Haplotypes
+    filesH = [f for f in os.listdir() if f.endswith('-_corrHap-ng.fasta')]
+    for file in filesH:
+        outf = str(file).split("-")[0] + "-_HaplotypesFinal.fasta"
+        countHaps(file, outf)
+
 
     # removing temporal files
     remove_temp_files(rmFiles)

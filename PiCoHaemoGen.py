@@ -83,11 +83,11 @@ def main():
     ## gapfree output
     filesG0  = [f for f in os.listdir() if f.endswith('-_RawHap.fasta')]
     for file in filesG0:
-        outf = str(file).split("-")[0] + "-_RawHap-ng.fasta"
+        outf = str(file).split("-")[0] + "-_RawHapng.fasta"
         remove_gaps_from_multifasta(file, outf)
 
     ### mafft gapfree
-    filesM1 = [f for f in os.listdir() if f.endswith('-_RawHap-ng.fasta')]
+    filesM1 = [f for f in os.listdir() if f.endswith('-_RawHapng.fasta')]
     mafftHap(filesM1)
 
     ## correcting Haplotype alignment

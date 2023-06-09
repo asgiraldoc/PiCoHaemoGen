@@ -7,7 +7,7 @@ sys.path.append('scripts/')
 
 ## import functions
 from readsRedirection import primerDetection
-from mafft import mafftRaw, mafftFinal
+from mafft import mafftRaw, mafftFinal, mafftHap
 from fasta2binary import fasta2bin
 from VAEmethod import VAE_model
 from DBScan import extract_cluster_labels_dbscan

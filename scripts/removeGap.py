@@ -3,24 +3,25 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 def remove_gaps_from_multifasta(input_file, output_file):
-    # Leer el archivo multifasta de entrada
+    # Read the input multifasta file
     records = SeqIO.parse(input_file, "fasta")
 
-    # Crear una lista para almacenar los registros de secuencia sin gaps
+    # Create a list to store the gap-removed sequence records
     gap_removed_records = []
 
-    # Recorrer cada registro en el archivo multifasta
+    # Iterate over each record in the multifasta file
     for record in records:
-        # Obtener la secuencia del registro y eliminar los gaps
-        sequence = record.seq
+        # Get the sequence from the record and remove the gaps
+        sequence = str(record.seq)  # Convert Seq to a string
         sequence = sequence.replace("-", "")
 
-        # Crear un nuevo registro sin gaps
+        # Create a new gap-removed record
         gap_removed_record = SeqRecord(Seq(sequence), id=record.id, description="")
 
-        # Agregar el registro sin gaps a la lista
+        # Add the gap-removed record to the list
         gap_removed_records.append(gap_removed_record)
 
-    # Escribir los registros sin gaps en un nuevo archivo multifasta
+    # Write the gap-removed records to a new multifasta file
     with open(output_file, "w") as handle:
         SeqIO.write(gap_removed_records, handle, "fasta")
+

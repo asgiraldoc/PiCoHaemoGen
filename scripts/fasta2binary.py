@@ -1,20 +1,32 @@
 from Bio import SeqIO  # Importing SeqIO from BioPython for parsing sequences.
 import subprocess
 
-# This function converts a nucleotide to its binary representation.
-# It could be optimized by using a dictionary instead of multiple if/elif statements.
 def nucleotide_to_binary(nucleotide):
-    nucleotide = nucleotide.upper()  # Convert nucleotide to upper case to remove redundancy
-    if nucleotide == "A":
-        return "1,0,0,0"
-    elif nucleotide == "C":
-        return "0,1,0,0"
-    elif nucleotide == "G":
-        return "0,0,1,0"
-    elif nucleotide == "T":
-        return "0,0,0,1"
+    nucleotide = nucleotide.upper()
+    nucleotide_dict = {
+        "A": "1,0,0,0",
+        "C": "0,1,0,0",
+        "G": "0,0,1,0",
+        "T": "0,0,0,1",
+        "U": "0,1,1,0",  # Uracil
+        "R": "1,1,0,0",  # A o G
+        "Y": "0,1,1,1",  # C o T
+        "S": "0,1,0,1",  # G o C
+        "W": "1,0,1,0",  # A o T
+        "M": "1,0,1,1",  # A o C
+        "B": "0,0,1,1",  # C o G o T
+        "D": "1,1,0,1",  # A o G o T
+        "H": "1,0,0,1",  # A o C o T
+        "V": "1,0,1,1",  # A o C o G
+        "N": "1,1,1,1",  # Any base
+        "-": "0,0,0,0"   # Gap
+    }
+
+    # Return the binary representation if the nucleotide is found in the dictionary
+    if nucleotide in nucleotide_dict:
+        return nucleotide_dict[nucleotide]
     else:
-        return "0,0,0,0"
+        print("Invalid nucleotide provided")
 
 # This function converts a multifasta file to a binary sequence file.
 def fasta2bin(input_file, dir_out):
@@ -32,3 +44,4 @@ def fasta2bin(input_file, dir_out):
             output.write(header + " " + nameFile + " " + binary_sequence + "\n")  # Write the header and binary sequence to the output file.
     mv_command = ["mv", output_file, dir_out]
     subprocess.run(mv_command)
+

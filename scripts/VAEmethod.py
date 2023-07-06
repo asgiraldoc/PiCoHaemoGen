@@ -17,7 +17,7 @@ def store_data(file_name, data_obj):
             print(data_obj["name"][i], data_obj["group"][i], end="", file=output_file)
             for j in range(data_obj["shape"][1]):
                 print(" ", end=" ", file=output_file)
-                print(",".join([str(val) for val in list(data_obj["one_hot"][i][j])]), end="", file=output_file)
+                print(",".join([str(val) for val in list(data_obj["dna_code"][i][j])]), end="", file=output_file)
             print("", file=output_file)
 
 
@@ -27,28 +27,26 @@ def retrieve_data(file_name):
         "data_set": file_name.replace(".txt", ""),
         "name": [],
         "group": [],
-        "one_hot": []
+        "dna_code": []
     }
     with open(file_name, "r") as input_file:
         for line in input_file:
             values = line.rstrip("\n").split(" ")
             data_obj["name"].append(values[0])
             data_obj["group"].append(values[1])
-            data_obj["one_hot"].append([val.split(",") for val in values[2:]])
+            data_obj["dna_code"].append([val.split(",") for val in values[2:]])
 
     data_obj["name"] = np.array(data_obj["name"], str)
     data_obj["group"] = np.array(data_obj["group"], str)
-    data_obj["one_hot"] = np.array(data_obj["one_hot"], float)
-    data_obj["shape"] = data_obj["one_hot"].shape
+    data_obj["dna_code"] = np.array(data_obj["dna_code"], float)
+    data_obj["shape"] = data_obj["dna_code"].shape
     return data_obj
 
 
-def display_z_distribution(z, loc, title="none", legend=True):
+def plot_z_distribution(z, loc, title="none", legend=True):
     """Plots the Z distribution."""
     x = z[:, 0]
     y = z[:, 1]
-
-    cmap = plt.cm.get_cmap("tab20c", len(np.unique(loc)))
 
     for idx, lo in enumerate(np.unique(loc)):
         xx = []
@@ -57,17 +55,15 @@ def display_z_distribution(z, loc, title="none", legend=True):
             if lo == loc[i]:
                 xx.append(x[i])
                 yy.append(y[i])
-        plt.scatter(xx, yy, label=lo, color=cmap(idx))
+        plt.scatter(xx, yy, label=lo, color="#1f77b4")
 
     if title != "none": plt.title(title)
     if legend == True:
         plt.legend(bbox_to_anchor=(1, 0, 0.5, 1), loc="upper left",)
 
 
-def display_mu_sg(mu, sg, loc, sample=100, alpha=0.5, title="none", legend=True):
+def plot_mu_sg(mu, sg, loc, sample=100, alpha=0.5, title="none", legend=True):
     """Plots the mean and standard deviation."""
-    cmap = plt.cm.get_cmap("tab20c", len(np.unique(loc)))
-
     for idx, lo in enumerate(np.unique(loc)):
         xx = []
         yy = []
@@ -76,7 +72,7 @@ def display_mu_sg(mu, sg, loc, sample=100, alpha=0.5, title="none", legend=True)
                 x, y = (mu[i] + np.random.normal(0, 1, size=(sample, 2)) * sg[i]).T
                 xx += list(x)
                 yy += list(y)
-        plt.scatter(xx, yy, label=lo, alpha=alpha, color=cmap(idx))
+        plt.scatter(xx, yy, label=lo, alpha=alpha, color="#1f77b4")
 
     plt.scatter(mu[:, 0], mu[:, 1], s=30, facecolors='none', edgecolors='black', linewidths=1)
     if title != "none": plt.title(title)
@@ -99,7 +95,7 @@ def mk_model(
     
     act = "elu" # activation function for each layer
 ):
-  
+
   def act_fn(fn,tensor):
     if fn == "leakyrelu": return LeakyReLU()(tensor)
     else: return Activation(fn)(tensor)
@@ -188,15 +184,14 @@ def do_it(data):
   def gen(batch_size):
     while True:
       idx = np.random.randint(0,data["shape"][0],size=batch_size)
-      tmp = data["one_hot"][idx]
+      tmp = data["dna_code"][idx]
       yield tmp,tmp
 
   K.clear_session()
+
   vae0,vae1,enc = mk_model(data["shape"][1],data["shape"][2])
   loss_history = []
   acc_history = []
-  
-  
   r = 4
   for i in range(r):
     f = 1/(r-i)
@@ -218,16 +213,18 @@ def do_it(data):
     if i == r-1:
       plt.subplot(2, 2, 1)
       plt.plot(np.arange(len(loss_history)),loss_history)
-      plt.ylabel("loss")
+      plt.title("Loss function training")
       plt.subplot(2, 2, 2)
       plt.plot(np.arange(len(acc_history)),acc_history)
-      plt.ylabel("accuracy")
+      plt.title("Accuracy function training")
 
-      vae_mu,vae_sg = enc.predict(data["one_hot"])
+      vae_mu,vae_sg = enc.predict(data["dna_code"])
       plt.subplot(2, 2, 3)
-      display_z_distribution(vae_mu,data["group"],legend=False)
+      plot_z_distribution(vae_mu,data["group"],legend=False)
+      plt.title("Z distribution")
       plt.subplot(2, 2, 4)
-      display_mu_sg(vae_mu,vae_sg,data["group"],sample=100,legend=False)
+      plot_mu_sg(vae_mu,vae_sg,data["group"],sample=100,legend=False)
+      plt.title(r'$\mu$ and $\sigma$ distribution')
       plt.savefig(data["data_set"]+".png")
       
   return vae_mu,vae_sg, data 

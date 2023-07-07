@@ -48,11 +48,3 @@ def remove_gap_columns(input_alignment_file, output_alignment_file, trim_at_posi
 
     # Write the new alignment to the output file in FASTA format
     SeqIO.write(new_alignments, output_alignment_file, "fasta")
-
-
-
-
-# filesG0  = [f for f in os.listdir() if f.endswith('_aliHap.fasta')]
-# for file in filesG0:
-#     outf = str(file).split("-")[0] + "_aliHap-ng.fasta"
-#     remove_gap_columns(file, outf, "no")

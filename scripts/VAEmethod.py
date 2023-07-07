@@ -214,9 +214,13 @@ def do_it(data):
       plt.subplot(2, 2, 1)
       plt.plot(np.arange(len(loss_history)),loss_history)
       plt.title("Loss function training")
+      plt.xlabel("Epochs")
+      plt.ylabel("Loss")
       plt.subplot(2, 2, 2)
       plt.plot(np.arange(len(acc_history)),acc_history)
       plt.title("Accuracy function training")
+      plt.ylabel("Accuracy")
+      plt.xlabel("Epochs")
 
       vae_mu,vae_sg = enc.predict(data["dna_code"])
       plt.subplot(2, 2, 3)

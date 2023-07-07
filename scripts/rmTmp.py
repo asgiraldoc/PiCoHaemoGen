@@ -10,6 +10,18 @@ def remove_temp_files(rmFiles):
                 or file.endswith("_corrected.fasta")\
                 or file.endswith(".fa")\
                 or file.endswith("_mafftRaw.fasta")\
+                or file.endswith("consensus.fasta-_HaplotypesFinal.fasta")\
+                or file.endswith("consensus.fasta-_corrHapng.fasta")\
+                or file.endswith("_corrHapng.fasta")\
+                or file.endswith("_corrHap.fasta")\
+                or file.endswith("_consensus.fasta-_corrHap.fasta")\
+                or file.endswith("_aliHap.fasta")\
+                or file.endswith("_consensus.fasta-_aliHap.fasta")\
+                or file.endswith("_RawHapng.fasta")\
+                or file.endswith("_consensus.fasta-_RawHapng.fasta")\
+                or file.endswith("_consensus.fasta-_RawHap.fasta")\
+                or file.endswith("_RawHap.fasta")\
+                or file.endswith("_consensus.fasta")\
                 or file.endswith("_nolong.fasta"):
                 if os.path.exists(file_path):
                     os.remove(file_path)

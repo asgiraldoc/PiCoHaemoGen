@@ -106,7 +106,7 @@ def main():
     filesH = [f for f in os.listdir() if f.endswith('-_corrHapng.fasta')]
     for file in filesH:
         outf = str(file).split("-")[0] + "-_HaplotypesFinal.fasta"
-        countHaps(file, outf)
+        countHaplotypes(file, outf)
 
 
     # removing temporal files

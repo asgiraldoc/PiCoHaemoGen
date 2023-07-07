@@ -4,31 +4,31 @@ from Bio.Seq import Seq
 from Bio.Align import MultipleSeqAlignment
 from collections import Counter
 
-def countHaps(alignment_file, output_file):
+def countHaplotypes(alignment_file, output_file):
     alignment = AlignIO.read(alignment_file, "fasta")
 
-    # Almacenamos la primera secuencia y la excluimos del análisis
-    first_seq = alignment[0]
+    # We store the first sequence and exclude it from the analysis
+    first_seq = alignment[0][:5855]
     alignment = alignment[1:]
-    # Comparamos las secuencias y contamos las secuencias idénticas
-    seq_dict = Counter(str(record.seq) for record in alignment)
+    
+    # We trim each sequence at position 500 before comparing
+    seq_dict = Counter(str(record.seq[:5855]) for record in alignment) # trim each seq at this pos due to primers [:5855]
 
-    # Calculamos el umbral que corresponde al 1% del total de secuencias
-    threshold = len(alignment) * 0.01
+    # We calculate the threshold that corresponds to 1% of the total number of sequences
+    threshold = len(alignment) * 0.05
 
-    # Creamos un nuevo alineamiento con la primera secuencia
-    new_alignment = MultipleSeqAlignment([first_seq])
+    # We create a new alignment with the first sequence
+    new_alignment = MultipleSeqAlignment([SeqRecord(seq=first_seq.seq, id=first_seq.id, description=first_seq.description)])
     hap = 0
     for seq, count in seq_dict.items():
-        # Si la secuencia aparece menos veces que el umbral, la excluimos
+        # If the sequence appears less times than the threshold, we exclude it
         if count < threshold:
             continue
         hap += 1
-        # Imprimimos la secuencia y el número de veces que aparece
-        #print(f'Secuencia: {seq}, Número de veces que aparece: {count}')
+        # We print the sequence and the number of times it appears
+        #print(f'Sequence: {seq}, Number of times it appears: {count}')
         new_record = SeqRecord(seq=Seq(seq), id=f'{first_seq.id}_Hap-{hap}_({count})', description='')
         new_alignment.append(new_record)
 
-    # Escribimos el nuevo alineamiento en el archivo de salida
+    # We write the new alignment to the output file
     AlignIO.write(new_alignment, output_file, "fasta")
-

@@ -18,7 +18,7 @@ from concatenate import concat
 from corrHap import correct_sequences
 from removeGap import remove_gaps_from_multifasta
 from gapFree import remove_gap_columns
-from countHap import countHaps
+from countHap import countHaplotypes
 
 def main():
     ## Arguments 

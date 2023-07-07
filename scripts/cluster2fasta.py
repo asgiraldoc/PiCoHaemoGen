@@ -19,13 +19,3 @@ def txt2fasta(input_file, headers_file, mapped_output_file):
             if record.id in header_set:
                 # Write the sequence to the mapped sequences file
                 SeqIO.write(record, mapped_out_file, "fasta")
-
-# os.chdir("../example_data")
-# dirc = os.getcwd()
-
-# txtCluster = [f for f in os.listdir(dirc) if f.endswith('-.txt') and f.startswith("test")]
-# print(txtCluster)
-
-# for headers_file in txtCluster:
-#     mapped_output_file = headers_file.split(".")[0] + ".fa"
-#     txt2fasta("test.fasta", headers_file, mapped_output_file)

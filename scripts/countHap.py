@@ -8,11 +8,11 @@ def countHaplotypes(alignment_file, output_file):
     alignment = AlignIO.read(alignment_file, "fasta")
 
     # We store the first sequence and exclude it from the analysis
-    first_seq = alignment[0][:5855]
+    first_seq = alignment[0]
     alignment = alignment[1:]
     
     # We trim each sequence at position 500 before comparing
-    seq_dict = Counter(str(record.seq[:5855]) for record in alignment) # trim each seq at this pos due to primers [:5855]
+    seq_dict = Counter(str(record.seq) for record in alignment) # trim each seq at this pos due to primers [:5855]
 
     # We calculate the threshold that corresponds to 1% of the total number of sequences
     threshold = len(alignment) * 0.05
